@@ -1,0 +1,142 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MezunBilgiSistemi
+{
+    public class LinkedList : LinkedListADT
+    {
+        public override void InsertFirst(object value)
+        {
+            Node tmpHead = new Node
+            {
+                Data = value
+            };
+
+            if (Head == null)
+                Head = tmpHead;
+            else
+            {
+                tmpHead.Next = Head;
+                Head = tmpHead;
+            }
+            Size++;
+        }
+
+        public override void InsertLast(object value)
+        {
+            Node newLast = new Node();
+            if (Head == null)
+            {
+                newLast.Data = value;
+                Head = newLast;
+                return;
+            }
+            Node curr = Head;
+            while (curr.Next != null)
+            {
+                curr = curr.Next;
+            }
+            newLast.Data = value;
+            curr.Next = newLast;
+            Size++;
+
+        }
+
+        public override void InsertPos(int position, object value)
+        {
+            Node newNode = new Node { Data = value };
+            Node posNode = null;
+            Node tempNext = null;
+            if (Head == null)
+                InsertFirst(value);
+            else
+            {
+                posNode = GetElement(position);
+                tempNext = posNode.Next;
+                posNode.Next = newNode;
+                newNode.Next = tempNext;
+            }
+            Size++;
+        }
+
+        public override void DeleteFirst()
+        {
+            if (Head != null)
+            {
+                Node HeadNext = this.Head.Next;
+                if (HeadNext == null)
+                    Head = null;
+                else
+                    Head = HeadNext;
+                Size--;
+            }
+        }
+
+        public override void DeleteLast()
+        {
+            Node item = Head;
+            int i = 1;
+            while (item != null)
+            {
+                if (i == Size - 1)
+                {
+                    item.Next = null;
+                    break;
+                }
+                item = item.Next;
+                i++;
+            }
+            Size--;
+
+        }
+        public override void DeletePos(int position)
+        {
+
+            Node item = Head;
+            Node pos = null;
+            if (position == 0) 
+            {
+                DeleteFirst();
+                return;
+            }
+            pos = GetElement(position);
+            item = GetElement(position - 1);
+            item.Next = pos.Next;
+            pos = null;
+            Size--;
+        }
+
+        public override Node GetElement(int position)
+        {
+            Node item = Head;
+            Node pos = null;
+            int i = 0;
+            while (item != null)
+            {
+                if (i == position)
+                {
+                    pos = item;
+                }
+                item = item.Next;
+                i++;
+            }
+            return pos;
+        }
+
+        public override string DisplayElements()
+        {
+            string temp = "";
+            Node item = Head;
+            while (item != null)
+            {
+                temp += "-->" + item.Data;
+                item = item.Next;
+            }
+
+            return temp;
+        }
+    }
+}
